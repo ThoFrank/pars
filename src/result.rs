@@ -1,6 +1,6 @@
 use std::{fmt::Debug, ops::Deref};
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub struct ParseOk<T> {
     pub bytes_parsed: usize,

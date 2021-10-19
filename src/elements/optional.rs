@@ -1,38 +1,42 @@
 use crate::{ParseElement, ParseOk};
 
-struct Optional<T: ParseElement>{
-    elem: T
+pub struct Optional<T: ParseElement> {
+    elem: T,
 }
 
-impl<T: ParseElement> Optional<T>{
-    fn new(elem: T) -> Optional<T>{
-        Optional{elem}
+impl<T: ParseElement> Optional<T> {
+    pub fn new(elem: T) -> Optional<T> {
+        Optional { elem }
     }
 }
 
 impl<T> ParseElement for Optional<T>
 where
-    T: ParseElement
+    T: ParseElement,
 {
     type ParseOut = Option<T::ParseOut>;
 
     fn pars(&self, input: &str) -> crate::ParseResult<Self::ParseOut> {
-        if let Ok(ParseOk{bytes_parsed, result}) = self.elem.pars(input){
-            Ok(ParseOk{
+        if let Ok(ParseOk {
+            bytes_parsed,
+            result,
+        }) = self.elem.pars(input)
+        {
+            Ok(ParseOk {
                 bytes_parsed,
-                result: Some(result)
+                result: Some(result),
             })
-        }else{
-            Ok(ParseOk{
-                bytes_parsed:0,
-                result: None
+        } else {
+            Ok(ParseOk {
+                bytes_parsed: 0,
+                result: None,
             })
         }
     }
 }
 
 #[test]
-fn optional(){
+fn optional() {
     let parser = Optional::new("Maybe");
 
     let result = parser.pars("");
