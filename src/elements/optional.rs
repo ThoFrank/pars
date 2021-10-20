@@ -37,7 +37,8 @@ where
 
 #[test]
 fn optional() {
-    let parser = Optional::new("Maybe");
+    use crate::Literal;
+    let parser = Optional::new(Literal("Maybe"));
 
     let result = parser.pars("");
     assert!(result.is_ok());

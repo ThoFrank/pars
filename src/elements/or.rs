@@ -27,7 +27,8 @@ where
 
 #[test]
 fn or() {
-    let parser = "A".or("B");
+    use crate::Literal;
+    let parser = Literal("A").or(Literal("B"));
     let result = parser.pars("A");
     assert!(result.is_ok());
     let result = result.unwrap();

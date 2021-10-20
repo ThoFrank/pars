@@ -45,7 +45,8 @@ where
 
 #[test]
 fn zero_or_more() {
-    let parser = ZeroOrMore::new("duck, ").tup("duck");
+    use crate::Literal;
+    let parser = ZeroOrMore::new(Literal("duck, ")).tup(Literal("duck"));
     let result = parser.pars("duck");
     assert!(result.is_ok());
     let result = result.unwrap();

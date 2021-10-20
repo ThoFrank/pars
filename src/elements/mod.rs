@@ -1,24 +1,26 @@
 mod literal;
 mod mapped;
+mod not;
 mod num;
+mod one_of;
+mod one_or_more;
 mod optional;
 mod or;
 mod tuple;
-mod zero_or_more;
-mod one_or_more;
-mod not;
 mod uninit;
+mod zero_or_more;
 use crate::result::ParseResult;
 pub use literal::Literal;
 pub use mapped::Mapped;
+pub use not::Not;
 pub use num::Integer;
+pub use one_of::OneOf;
+pub use one_or_more::OneOrMore;
 pub use optional::Optional;
 pub use or::Or;
 pub use tuple::Tuple;
-pub use zero_or_more::ZeroOrMore;
-pub use one_or_more::OneOrMore;
-pub use not::Not;
 pub use uninit::Uninit;
+pub use zero_or_more::ZeroOrMore;
 pub trait ParseElement {
     type ParseOut;
 
@@ -71,7 +73,7 @@ where
 
 impl<T> ParseElement for &T
 where
-    T: ParseElement
+    T: ParseElement,
 {
     type ParseOut = T::ParseOut;
 

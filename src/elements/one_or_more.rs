@@ -40,9 +40,9 @@ where
             input = &input[current_result.bytes_parsed..]
         }
         let ret = ret.unwrap();
-        if ret.result.len() == 0{
-            Err(ParseError{})
-        }else{
+        if ret.result.len() == 0 {
+            Err(ParseError {})
+        } else {
             Ok(ret)
         }
     }
@@ -50,7 +50,8 @@ where
 
 #[test]
 fn one_or_more() {
-    let parser = OneOrMore::new("duck, ").tup("duck");
+    use crate::Literal;
+    let parser = OneOrMore::new(Literal("duck, ")).tup(Literal("duck"));
     let result = parser.pars("duck");
     assert!(result.is_err());
 

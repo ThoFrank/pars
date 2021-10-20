@@ -20,7 +20,8 @@ impl<A: ParseElement, B: ParseElement> ParseElement for Tuple<A, B> {
 
 #[test]
 fn tup() {
-    let parser = "Hello ".tup("World!");
+    use crate::Literal;
+    let parser = Literal("Hello ").tup(Literal("World!"));
     let result = parser.pars("Hello World!");
     assert!(result.is_ok());
     let result = result.unwrap();

@@ -27,8 +27,9 @@ where
 
 #[test]
 fn map() {
-    let parser = "Hello, "
-        .tup("World!")
+    use crate::Literal;
+    let parser = Literal("Hello, ")
+        .tup(Literal("World!"))
         .map(|(s1, s2): (String, String)| s1 + &s2);
     let ParseOk {
         bytes_parsed,
