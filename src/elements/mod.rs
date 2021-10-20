@@ -5,6 +5,9 @@ mod optional;
 mod or;
 mod tuple;
 mod zero_or_more;
+mod one_or_more;
+mod not;
+mod uninit;
 use crate::result::ParseResult;
 pub use literal::Literal;
 pub use mapped::Mapped;
@@ -13,6 +16,9 @@ pub use optional::Optional;
 pub use or::Or;
 pub use tuple::Tuple;
 pub use zero_or_more::ZeroOrMore;
+pub use one_or_more::OneOrMore;
+pub use not::Not;
+pub use uninit::Uninit;
 pub trait ParseElement {
     type ParseOut;
 
@@ -62,3 +68,14 @@ where
     }
 }
 */
+
+impl<T> ParseElement for &T
+where
+    T: ParseElement
+{
+    type ParseOut = T::ParseOut;
+
+    fn pars(&self, input: &str) -> ParseResult<Self::ParseOut> {
+        T::pars(&self, input)
+    }
+}
