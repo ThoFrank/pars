@@ -1,4 +1,4 @@
-use crate::{Or, ParseElement, ParseOk, ParseResult};
+use crate::{Or, ParseElement, ParseOk, ParseResult, Tuple};
 
 pub struct ZeroOrMore<T>
 where
@@ -52,6 +52,18 @@ where
 
     fn bitor(self, rhs: Rhs) -> Self::Output {
         self.or(rhs)
+    }
+}
+
+impl<T, Rhs> std::ops::Add<Rhs> for ZeroOrMore<T>
+where
+    Rhs: ParseElement,
+    T: ParseElement,
+{
+    type Output = Tuple<ZeroOrMore<T>, Rhs>;
+
+    fn add(self, rhs: Rhs) -> Self::Output {
+        self.tup(rhs)
     }
 }
 

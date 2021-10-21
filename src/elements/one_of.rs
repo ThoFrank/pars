@@ -1,4 +1,4 @@
-use crate::{Or, ParseElement, ParseError};
+use crate::{Or, ParseElement, ParseError, Tuple};
 
 pub struct OneOf<T>(Vec<T>);
 
@@ -37,6 +37,18 @@ where
 
     fn bitor(self, rhs: Rhs) -> Self::Output {
         self.or(rhs)
+    }
+}
+
+impl<T, Rhs> std::ops::Add<Rhs> for OneOf<T>
+where
+    Rhs: ParseElement,
+    T: ParseElement,
+{
+    type Output = Tuple<OneOf<T>, Rhs>;
+
+    fn add(self, rhs: Rhs) -> Self::Output {
+        self.tup(rhs)
     }
 }
 

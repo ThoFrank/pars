@@ -1,4 +1,4 @@
-use crate::{Or, ParseElement, ParseError, ParseOk};
+use crate::{Or, ParseElement, ParseError, ParseOk, Tuple};
 
 pub struct Not<T>(pub T);
 
@@ -28,5 +28,17 @@ where
 
     fn bitor(self, rhs: Rhs) -> Self::Output {
         self.or(rhs)
+    }
+}
+
+impl<T, Rhs> std::ops::Add<Rhs> for Not<T>
+where
+    T: ParseElement,
+    Rhs: ParseElement,
+{
+    type Output = Tuple<Not<T>, Rhs>;
+
+    fn add(self, rhs: Rhs) -> Self::Output {
+        self.tup(rhs)
     }
 }

@@ -1,4 +1,4 @@
-use crate::ParseElement;
+use crate::{ParseElement, Tuple};
 
 pub struct Or<A, B, Out>
 where
@@ -35,6 +35,19 @@ where
 
     fn bitor(self, rhs: C) -> Self::Output {
         self.or(rhs)
+    }
+}
+
+impl<A, B, C, Out> std::ops::Add<C> for Or<A, B, Out>
+where
+    A: ParseElement<ParseOut = Out>,
+    B: ParseElement<ParseOut = Out>,
+    C: ParseElement,
+{
+    type Output = Tuple<Or<A, B, Out>, C>;
+
+    fn add(self, rhs: C) -> Self::Output {
+        self.tup(rhs)
     }
 }
 

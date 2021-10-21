@@ -31,6 +31,19 @@ where
     }
 }
 
+impl<A, B, Rhs> std::ops::Add<Rhs> for Tuple<A, B>
+where
+    A: ParseElement,
+    B: ParseElement,
+    Rhs: ParseElement,
+{
+    type Output = Tuple<Tuple<A, B>, Rhs>;
+
+    fn add(self, rhs: Rhs) -> Self::Output {
+        self.tup(rhs)
+    }
+}
+
 #[test]
 fn tup() {
     use crate::Literal;

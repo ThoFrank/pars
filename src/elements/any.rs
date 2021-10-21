@@ -1,4 +1,4 @@
-use crate::{Or, ParseElement, ParseError, ParseOk};
+use crate::{Or, ParseElement, ParseError, ParseOk, Tuple};
 
 pub struct Any;
 
@@ -25,6 +25,17 @@ where
 
     fn bitor(self, rhs: T) -> Self::Output {
         self.or(rhs)
+    }
+}
+
+impl<T> std::ops::Add<T> for Any
+where
+    T: ParseElement,
+{
+    type Output = Tuple<Any, T>;
+
+    fn add(self, rhs: T) -> Self::Output {
+        self.tup(rhs)
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::{Or, ParseElement, ParseOk};
+use crate::{Or, ParseElement, ParseOk, Tuple};
 
 pub struct Optional<T: ParseElement> {
     elem: T,
@@ -44,6 +44,18 @@ where
 
     fn bitor(self, rhs: Rhs) -> Self::Output {
         self.or(rhs)
+    }
+}
+
+impl<T, Rhs> std::ops::Add<Rhs> for Optional<T>
+where
+    T: ParseElement,
+    Rhs: ParseElement,
+{
+    type Output = Tuple<Optional<T>, Rhs>;
+
+    fn add(self, rhs: Rhs) -> Self::Output {
+        self.tup(rhs)
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::{Or, ParseElement, ParseOk, ParseResult};
+use crate::{Or, ParseElement, ParseOk, ParseResult, Tuple};
 
 pub struct Mapped<T, F> {
     pub(crate) element: T,
@@ -35,6 +35,19 @@ where
 
     fn bitor(self, rhs: Rhs) -> Self::Output {
         self.or(rhs)
+    }
+}
+
+impl<T, F, Out, Rhs> std::ops::Add<Rhs> for Mapped<T, F>
+where
+    T: ParseElement,
+    Rhs: ParseElement,
+    F: Fn(T::ParseOut) -> Out,
+{
+    type Output = Tuple<Mapped<T, F>, Rhs>;
+
+    fn add(self, rhs: Rhs) -> Self::Output {
+        self.tup(rhs)
     }
 }
 

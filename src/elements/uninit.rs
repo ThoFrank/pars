@@ -1,6 +1,6 @@
 use std::{cell::RefCell, rc::{Rc, Weak}};
 
-use crate::{Or, ParseElement};
+use crate::{Or, ParseElement, Tuple};
 
 pub struct Uninit<Out>(Rc<RefCell<Option<Box<dyn ParseElement<ParseOut = Out>>>>>);
 pub struct UnInitRef<Out>(Weak<RefCell<Option<Box<dyn ParseElement<ParseOut = Out>>>>>);
@@ -32,6 +32,17 @@ where
     }
 }
 
+impl<Out, Rhs> std::ops::Add<Rhs> for Uninit<Out>
+where
+    Rhs: ParseElement,
+{
+    type Output = Tuple<Uninit<Out>, Rhs>;
+
+    fn add(self, rhs: Rhs) -> Self::Output {
+        self.tup(rhs)
+    }
+}
+
 impl<Out> ParseElement for Uninit<Out> {
     type ParseOut = Out;
 
@@ -51,5 +62,26 @@ impl<Out> ParseElement for UnInitRef<Out> {
             Some(elem) => elem.pars(input),
             None => unreachable!("Execution of this means a Grammar rule was not initialized!"),
         }
+    }
+}
+impl<Out, Rhs> std::ops::BitOr<Rhs> for UnInitRef<Out>
+where
+    Rhs: ParseElement<ParseOut = Out>,
+{
+    type Output = Or<UnInitRef<Out>, Rhs, Out>;
+
+    fn bitor(self, rhs: Rhs) -> Self::Output {
+        self.or(rhs)
+    }
+}
+
+impl<Out, Rhs> std::ops::Add<Rhs> for UnInitRef<Out>
+where
+    Rhs: ParseElement,
+{
+    type Output = Tuple<UnInitRef<Out>, Rhs>;
+
+    fn add(self, rhs: Rhs) -> Self::Output {
+        self.tup(rhs)
     }
 }
