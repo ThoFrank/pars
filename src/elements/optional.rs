@@ -1,4 +1,4 @@
-use crate::{ParseElement, ParseOk};
+use crate::{Or, ParseElement, ParseOk};
 
 pub struct Optional<T: ParseElement> {
     elem: T,
@@ -32,6 +32,18 @@ where
                 result: None,
             })
         }
+    }
+}
+
+impl<T, Rhs> std::ops::BitOr<Rhs> for Optional<T>
+where
+    T: ParseElement,
+    Rhs: ParseElement<ParseOut = Option<T::ParseOut>>
+{
+    type Output = Or<Optional<T>, Rhs, Rhs::ParseOut>;
+
+    fn bitor(self, rhs: Rhs) -> Self::Output {
+        self.or(rhs)
     }
 }
 

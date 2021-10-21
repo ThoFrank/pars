@@ -1,4 +1,4 @@
-use crate::{ParseElement, ParseError, ParseOk, ParseResult};
+use crate::{Or, ParseElement, ParseError, ParseOk, ParseResult};
 
 pub struct OneOrMore<T>
 where
@@ -45,6 +45,18 @@ where
         } else {
             Ok(ret)
         }
+    }
+}
+
+impl<T, Rhs> std::ops::BitOr<Rhs> for OneOrMore<T>
+where
+    Rhs: ParseElement<ParseOut = Vec<T::ParseOut>>,
+    T: ParseElement,
+{
+    type Output = Or<OneOrMore<T>, Rhs, Vec<T::ParseOut>>;
+
+    fn bitor(self, rhs: Rhs) -> Self::Output {
+        self.or(rhs)
     }
 }
 

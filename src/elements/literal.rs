@@ -1,4 +1,4 @@
-use crate::{ParseElement, ParseError, ParseOk, ParseResult};
+use crate::{Or, ParseElement, ParseError, ParseOk, ParseResult};
 
 pub struct Literal<T>(pub T);
 
@@ -20,24 +20,31 @@ where
     }
 }
 
-impl Into<Literal<&str>> for &'static str {
-    fn into(self) -> Literal<&'static str> {
-        Literal(self)
-    }
-}
+impl<T, U> std::ops::BitOr<T> for Literal<U>
+where
+    T: ParseElement<ParseOut = String>,
+    U: AsRef<str>
+{
+    type Output = Or<Literal<U>, T, String>;
 
-impl Into<Literal<String>> for String {
-    fn into(self) -> Literal<String> {
-        Literal(self)
+    fn bitor(self, rhs: T) -> Self::Output {
+        self.or(rhs)
     }
 }
 
 #[test]
 fn literal() {
-    let parser: Literal<_> = "test".into();
+    let parser: Literal<_> = Literal("test");
     let result = parser.pars("test");
     assert!(result.is_ok());
     let result = result.unwrap();
     assert_eq!(result.bytes_parsed, "test".len());
     assert_eq!(result.result, String::from("test"));
+}
+
+#[test]
+fn test_or_operator(){
+    let parser = Literal("Cat") | Literal("Dog");
+    let expected: ParseResult<String> = Ok(ParseOk{bytes_parsed: 3, result: "Cat".into()});
+    assert_eq!(parser.pars("Cat"), expected);
 }

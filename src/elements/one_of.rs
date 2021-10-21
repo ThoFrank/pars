@@ -1,4 +1,4 @@
-use crate::{ParseElement, ParseError};
+use crate::{Or, ParseElement, ParseError};
 
 pub struct OneOf<T>(Vec<T>);
 
@@ -25,6 +25,18 @@ where
             }
         }
         Err(ParseError {})
+    }
+}
+
+impl<T, Rhs, Out> std::ops::BitOr<Rhs> for OneOf<T>
+where
+    Rhs: ParseElement<ParseOut = Out>,
+    T: ParseElement<ParseOut = Out>,
+{
+    type Output = Or<OneOf<T>, Rhs, Out>;
+
+    fn bitor(self, rhs: Rhs) -> Self::Output {
+        self.or(rhs)
     }
 }
 

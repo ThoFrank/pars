@@ -1,4 +1,4 @@
-use crate::{ParseElement, ParseError, ParseOk};
+use crate::{Or, ParseElement, ParseError, ParseOk};
 
 pub struct Not<T>(pub T);
 
@@ -16,5 +16,17 @@ where
                 result: (),
             }),
         }
+    }
+}
+
+impl<T, Rhs> std::ops::BitOr<Rhs> for Not<T>
+where
+    T: ParseElement,
+    Rhs: ParseElement<ParseOut = ()>
+{
+    type Output = Or<Not<T>, Rhs, ()>;
+
+    fn bitor(self, rhs: Rhs) -> Self::Output {
+        self.or(rhs)
     }
 }

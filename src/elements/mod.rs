@@ -23,7 +23,7 @@ pub use tuple::Tuple;
 pub use uninit::Uninit;
 pub use zero_or_more::ZeroOrMore;
 pub use any::Any;
-pub trait ParseElement {
+pub trait ParseElement: {
     type ParseOut;
 
     fn pars(&self, input: &str) -> ParseResult<Self::ParseOut>;
@@ -59,21 +59,6 @@ pub trait ParseElement {
         }
     }
 }
-/*pub(crate) trait Ops{}
-
-impl<T, Out> std::ops::BitOr for T
-where
-    T: ParseElement<ParseOut = Out>,
-    T: Ops,
-    Out: Ops,
-{
-    type Output = Or<Self, Self, Out>;
-
-    fn bitor(self, rhs: Self) -> Self::Output {
-        todo!()
-    }
-}*/
-
 
 impl<T> ParseElement for &T
 where

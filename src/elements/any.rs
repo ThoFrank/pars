@@ -1,4 +1,4 @@
-use crate::{ParseElement, ParseError, ParseOk};
+use crate::{Or, ParseElement, ParseError, ParseOk};
 
 pub struct Any;
 
@@ -14,6 +14,17 @@ impl ParseElement for Any{
         } else {
             Err(ParseError{})
         }
+    }
+}
+
+impl<T> std::ops::BitOr<T> for Any
+where 
+    T: ParseElement<ParseOut = String>
+{
+    type Output = Or<Any, T, String>;
+
+    fn bitor(self, rhs: T) -> Self::Output {
+        self.or(rhs)
     }
 }
 

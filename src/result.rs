@@ -15,7 +15,7 @@ impl<T> Deref for ParseOk<T> {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 #[non_exhaustive]
 pub struct ParseError {}
 

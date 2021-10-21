@@ -1,4 +1,4 @@
-use crate::{ParseElement, ParseOk, ParseResult};
+use crate::{Or, ParseElement, ParseOk, ParseResult};
 
 pub struct Mapped<T, F> {
     pub(crate) element: T,
@@ -22,6 +22,19 @@ where
             bytes_parsed,
             result: (self.func)(result),
         })
+    }
+}
+
+impl<T, F, Rhs, Out> std::ops::BitOr<Rhs> for Mapped<T, F>
+where
+    T: ParseElement,
+    Rhs: ParseElement<ParseOut = Out>,
+    F: Fn(T::ParseOut) -> Out
+{
+    type Output = Or<Mapped<T, F>, Rhs, Out>;
+
+    fn bitor(self, rhs: Rhs) -> Self::Output {
+        self.or(rhs)
     }
 }
 

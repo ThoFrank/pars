@@ -25,6 +25,19 @@ where
     }
 }
 
+impl <A,B,C, Out> std::ops::BitOr<C> for Or<A,B,Out>
+where
+    A: ParseElement<ParseOut = Out>,
+    B: ParseElement<ParseOut = Out>,
+    C: ParseElement<ParseOut = Out>
+{
+    type Output = Or<Or<A, B, Out>, C, Out>;
+
+    fn bitor(self, rhs: C) -> Self::Output {
+        self.or(rhs)
+    }
+}
+
 #[test]
 fn or() {
     use crate::Literal;

@@ -1,4 +1,4 @@
-use crate::{ParseElement, ParseOk, ParseResult};
+use crate::{Or, ParseElement, ParseOk, ParseResult};
 
 pub struct ZeroOrMore<T>
 where
@@ -40,6 +40,18 @@ where
             input = &input[current_result.bytes_parsed..]
         }
         ret
+    }
+}
+
+impl<T, Rhs> std::ops::BitOr<Rhs> for ZeroOrMore<T>
+where
+    Rhs: ParseElement<ParseOut = Vec<T::ParseOut>>,
+    T: ParseElement,
+{
+    type Output = Or<ZeroOrMore<T>, Rhs, Vec<T::ParseOut>>;
+
+    fn bitor(self, rhs: Rhs) -> Self::Output {
+        self.or(rhs)
     }
 }
 
