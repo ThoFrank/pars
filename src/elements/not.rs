@@ -10,7 +10,7 @@ where
 
     fn pars(&self, input: &str) -> crate::ParseResult<Self::ParseOut> {
         match self.0.pars(input) {
-            Ok(_) => Err(ParseError {}),
+            Ok(_) => Err(ParseError::new()),
             Err(_) => Ok(ParseOk {
                 bytes_parsed: 0,
                 result: (),
@@ -22,7 +22,7 @@ where
 impl<T, Rhs> std::ops::BitOr<Rhs> for Not<T>
 where
     T: ParseElement,
-    Rhs: ParseElement<ParseOut = ()>
+    Rhs: ParseElement<ParseOut = ()>,
 {
     type Output = Or<Not<T>, Rhs, ()>;
 

@@ -1,3 +1,4 @@
+mod any;
 mod literal;
 mod mapped;
 mod not;
@@ -9,8 +10,8 @@ mod or;
 mod tuple;
 mod uninit;
 mod zero_or_more;
-mod any;
 use crate::result::ParseResult;
+pub use any::Any;
 pub use literal::Literal;
 pub use mapped::Mapped;
 pub use not::Not;
@@ -22,8 +23,7 @@ pub use or::Or;
 pub use tuple::Tuple;
 pub use uninit::Uninit;
 pub use zero_or_more::ZeroOrMore;
-pub use any::Any;
-pub trait ParseElement: {
+pub trait ParseElement {
     type ParseOut;
 
     fn pars(&self, input: &str) -> ParseResult<Self::ParseOut>;

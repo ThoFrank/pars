@@ -15,7 +15,7 @@ where
                 result: String::from(self.0.as_ref()),
             })
         } else {
-            Err(ParseError {})
+            Err(ParseError::new())
         }
     }
 }
@@ -23,7 +23,7 @@ where
 impl<T, U> std::ops::BitOr<T> for Literal<U>
 where
     T: ParseElement<ParseOut = String>,
-    U: AsRef<str>
+    U: AsRef<str>,
 {
     type Output = Or<Literal<U>, T, String>;
 
@@ -43,8 +43,11 @@ fn literal() {
 }
 
 #[test]
-fn test_or_operator(){
+fn test_or_operator() {
     let parser = Literal("Cat") | Literal("Dog");
-    let expected: ParseResult<String> = Ok(ParseOk{bytes_parsed: 3, result: "Cat".into()});
+    let expected: ParseResult<String> = Ok(ParseOk {
+        bytes_parsed: 3,
+        result: "Cat".into(),
+    });
     assert_eq!(parser.pars("Cat"), expected);
 }

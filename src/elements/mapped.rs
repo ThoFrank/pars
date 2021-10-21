@@ -29,7 +29,7 @@ impl<T, F, Rhs, Out> std::ops::BitOr<Rhs> for Mapped<T, F>
 where
     T: ParseElement,
     Rhs: ParseElement<ParseOut = Out>,
-    F: Fn(T::ParseOut) -> Out
+    F: Fn(T::ParseOut) -> Out,
 {
     type Output = Or<Mapped<T, F>, Rhs, Out>;
 

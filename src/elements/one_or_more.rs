@@ -41,7 +41,9 @@ where
         }
         let ret = ret.unwrap();
         if ret.result.len() == 0 {
-            Err(ParseError {})
+            Err(ParseError {
+                r#type: crate::result::ErrorType::ParsOnUninitialized,
+            })
         } else {
             Ok(ret)
         }

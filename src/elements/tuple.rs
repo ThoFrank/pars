@@ -18,13 +18,13 @@ impl<A: ParseElement, B: ParseElement> ParseElement for Tuple<A, B> {
     }
 }
 
-impl<A,B, Rhs> std::ops::BitOr<Rhs> for Tuple<A, B>
+impl<A, B, Rhs> std::ops::BitOr<Rhs> for Tuple<A, B>
 where
     A: ParseElement,
     B: ParseElement,
-    Rhs: ParseElement<ParseOut = (A::ParseOut, B::ParseOut)>
+    Rhs: ParseElement<ParseOut = (A::ParseOut, B::ParseOut)>,
 {
-    type Output = Or<Tuple<A,B>, Rhs, Rhs::ParseOut>;
+    type Output = Or<Tuple<A, B>, Rhs, Rhs::ParseOut>;
 
     fn bitor(self, rhs: Rhs) -> Self::Output {
         self.or(rhs)

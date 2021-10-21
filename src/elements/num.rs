@@ -6,7 +6,7 @@ impl ParseElement for Integer {
     type ParseOut = i32;
 
     fn pars(&self, input: &str) -> crate::ParseResult<Self::ParseOut> {
-        let mut last_parse = Err(ParseError {});
+        let mut last_parse = Err(ParseError::new());
         for i in 1..=input.len() {
             let val = input[0..i].parse::<i32>();
             if let Ok(val) = val {

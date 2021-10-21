@@ -17,7 +17,7 @@ impl<Out: Sized> Uninit<Out> {
 
 impl<Out, Rhs> std::ops::BitOr<Rhs> for Uninit<Out>
 where
-    Rhs: ParseElement<ParseOut = Out>
+    Rhs: ParseElement<ParseOut = Out>,
 {
     type Output = Or<Uninit<Out>, Rhs, Out>;
 

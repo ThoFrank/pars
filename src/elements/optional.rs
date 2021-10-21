@@ -38,7 +38,7 @@ where
 impl<T, Rhs> std::ops::BitOr<Rhs> for Optional<T>
 where
     T: ParseElement,
-    Rhs: ParseElement<ParseOut = Option<T::ParseOut>>
+    Rhs: ParseElement<ParseOut = Option<T::ParseOut>>,
 {
     type Output = Or<Optional<T>, Rhs, Rhs::ParseOut>;
 

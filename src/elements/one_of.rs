@@ -24,7 +24,7 @@ where
                 return result;
             }
         }
-        Err(ParseError {})
+        Err(ParseError::new())
     }
 }
 
